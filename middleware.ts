@@ -5,12 +5,12 @@ import type { NextRequest } from "next/server";
 import { auth } from "./auth";
 
 const protectedRoutes = ["/middleware"];
+
 export default async function middleware (req: NextRequest){
     const session = await auth();
     const isProtected = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
     if(!session && isProtected){
-        const absoluteURL = new URL("/", req.nextUrl.origin);
-        return NextResponse.redirect(absoluteURL.toString());
+        return NextResponse.redirect('/');
     }
     return NextResponse.next();
 }
