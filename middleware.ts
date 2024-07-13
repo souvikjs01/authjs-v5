@@ -11,12 +11,11 @@ export default async function middleware (req: NextRequest){
     const isProtected = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
     if(!session && isProtected){
         const absoluteURL = new URL('/', req.nextUrl.origin);
-        console.log(req.nextUrl.origin);        
-        return NextResponse.redirect(absoluteURL.toString());
+        return NextResponse.redirect(absoluteURL.href);
     }
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)']
+    matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)']
 }
