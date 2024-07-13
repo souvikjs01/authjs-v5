@@ -10,7 +10,9 @@ export default async function middleware (req: NextRequest){
     const session = await auth();
     const isProtected = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
     if(!session && isProtected){
-        return NextResponse.redirect('/');
+        const absoluteURL = new URL('/', req.nextUrl.origin);
+        console.log(req.nextUrl.origin);        
+        return NextResponse.redirect(absoluteURL.toString());
     }
     return NextResponse.next();
 }
